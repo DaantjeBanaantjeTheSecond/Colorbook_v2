@@ -1,44 +1,33 @@
 :root {
-    --userColor: #000000;
+  --userColor: #000000;
 }
 
-::-webkit-scrollbar { 
-    display: none; 
+::-webkit-scrollbar {
+  display: none;
 }
 
 body {
-    background-color: rgba(var(--userColor));
+  background-color: rgba(var(--userColor));
 }
 
 .usersContainer {
-    position: absolute;
-    top: 0px;
-    bottom: 0px;
-    right: 0px;
-    width: 50px;
-    overflow: scroll;
-    -webkit-overflow-scrolling: touch;
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  width: 50px;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 .userInList {
-/*   margin: 10px; */
+  margin-top: 10px;
   color: transparent;
-  width: 50px;
-  height: 50px;
-/*   border-radius: 50%; */
-/*   box-shadow: 0 0 3px #FFFFFF; */
-  animation-fill-mode: forwards;
+  width: 25px;
+  height: 25px;
+  margin-left: 50px;
+  border-radius: 50%;
   cursor: pointer;
-}
-
-@keyframes newUser {
-  from {margin-left: 120px;}
-  to {margin-left: 10px;} 
-}
-
-@keyframes userLeft {
-  from {margin-left: 10px;} 
-  to {margin-left: 120px;}
 }
 
 .friendRequestBox {
