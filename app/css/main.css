@@ -1,0 +1,19 @@
+body {
+  color: white;
+  font-family: Helvetica;
+  font-weight: 700;
+  background-color: #262626;
+  margin: 0px;
+  z-index: 0;
+  overflow: hidden;
+}
+
+button {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+button:focus {outline:0;}
