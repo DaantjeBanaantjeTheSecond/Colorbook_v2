@@ -31,16 +31,25 @@ function draw() {
         div.className = "userInList";
         div.style.backgroundColor = "rgba(" + positions[key].userColor + ",1)";
         usersContainer.appendChild(div);
-        div.style.animation = "newUser .5s ease";
-        div.addEventListener("animationend", animationEnd);
+        // div.style.animation = "newUser .5s ease";
+        // div.addEventListener("animationend", animationEnd);
         div.addEventListener("click", sendFriendRequest);
         divs[key] = div;
+        $(divs[key]).animate({ marginLeft: "15px" }, 500);
       }
     }
   });
   Object.keys(divs).forEach(function(key) {
     if (positions[key] === undefined) {
-      divs[key].style.animation = "userLeft .5s ease";
+      $(divs[key]).animate({ marginLeft: "50px" }, 500, function() {
+        usersContainer.removeChild(divs[key]);
+        delete divs[key];
+      });
+    }
+    if (divs[key].shake) {
+      $(divs[key])
+        .animate({width: "50px", height: "50px"}, {duration: 500, easing: "easein"})
+        .animate({width: "25px", height: "25px"}, {duration: 100, easing: "easeout"});
     }
   });
 }
@@ -50,25 +59,9 @@ function sendFriendRequest() {
   Object.keys(divs).forEach(function(key) {
     let divBG = divs[key].style.backgroundColor;
     if (thisBG == divBG) {
-      socket.emit("friendRequest", {reciever: key, sender: userColor});
+      socket.emit("friendRequest", { reciever: key, sender: userColor });
     }
   });
-}
-
-function animationEnd() {
-  let thisAnimation = this.style.animationName;
-  Object.keys(divs).forEach(function(key) {
-    let divAnimation = divs[key].style.animationName;
-    if (thisAnimation == divAnimation && thisAnimation == "userLeft") {
-      usersContainer.removeChild(divs[key]);
-      delete divs[key];
-    }
-  });
-}
-
-function removeUserAfterAnimation(key) {
-  if (divs[key].style.marginLeft == "120px") {
-  }
 }
 
 socket.emit("userColor", userColor);
@@ -94,7 +87,6 @@ socket.on("mousePositions", function(mousePositions) {
         x: mousePositions[key].x,
         y: mousePositions[key].y
       };
-
       positions[key] = mousePos;
     }
   });
@@ -107,9 +99,12 @@ socket.on("mousePositions", function(mousePositions) {
 });
 
 socket.on("personalFriendRequest", function(data) {
-  friendRequestBox.style.display = "block";
-  console.log(data);
-  friendRequestBox.style.backgroundColor = "rgba("+data+",1)";
+  Object.keys(divs).forEach(function(key) {
+    let temp = data.split(",");    
+    if (divs[key].style.backgroundColor == "rgb("+temp[0]+", "+temp[1]+", "+temp[2]+")") {
+      divs[key]["shake"] = true;
+    }
+  });
 });
 
 function windowResized() {
